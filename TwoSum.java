@@ -1,0 +1,84 @@
+//Program : 2
+
+import java.util.*;
+
+//given an array A[] of n numbers and another number x, 
+//determine two elements in A[] whose sum is exactly x
+
+//manually TC = O(N^2)
+//hence go for optimized way TC = O(n)
+//sort the given array & maintain 2 pointers - left & right
+
+public class TwoSum {
+    public static void main(String[] args) {
+        int[] arr = {22,51,23,44,87,58,98,56,11,99};
+        int sum = 74;
+        
+        TwoSum ob = new TwoSum();
+        ob.mergeSort(arr, 0, arr.length-1);
+
+        ob.find_two_sum(arr, sum);
+    }
+
+    void find_two_sum(int arr[], int sum){
+
+        int left = 0, right = arr.length - 1;
+        while(left < right){
+            if(arr[left] + arr[right] == sum){
+                System.out.print("sum is " + sum + ".\n2 sum numbers : " + arr[left] + " " + arr[right]);
+                return;
+            }
+            else if(arr[left] + arr[right] < sum){
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        System.out.print("Sum is not matched.");
+    }
+
+    void mergeSort(int[] arr, int low, int high){
+        int mid = low + (high - low) / 2;
+        if(low < high){
+            mergeSort(arr, low, mid);
+            mergeSort(arr, mid+1, high);
+            merge(arr, low, mid, high);
+        }
+    }
+
+    void merge(int[] arr, int low, int mid, int high){
+        int size1 = mid - low + 1;
+        int size2 = high - mid;
+
+        int arr1[] = new int[size1];
+        int arr2[] = new int[size2];
+
+        for(int i = 0; i < size1; i++){
+            arr1[i] = arr[low + i];
+        }
+        
+        for(int i = 0; i < size2; i++){
+            arr2[i] = arr[mid + 1 + i];
+        }
+
+        int i, p1 = 0, p2 = 0;
+
+        for(i = low; (p1 < size1) && (p2 < size2); i++){
+            if(arr1[p1] < arr2[p2]){
+                arr[i] = arr1[p1++];
+            }
+            else{
+                arr[i] = arr2[p2++];
+            }
+        }
+
+        while(p1 < size1){
+            arr[i++] = arr1[p1++];
+        }
+        while(p2 < size2){
+            arr[i++] = arr2[p2++];
+        }
+    }
+
+}
